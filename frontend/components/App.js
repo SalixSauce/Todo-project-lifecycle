@@ -1,16 +1,20 @@
 import React from 'react';
 import axios from 'axios';
 import Form from './Form'
+import TodoList from './TodoList'
 
 const URL = 'http://localhost:9000/api/todos'
 
 export default class App extends React.Component {
+  //Create the state 
   state={
     todos: [],
     error: '',
     todoNameInput: '',
     displayCompleted: true,
  }
+
+// create the instances 
  onTodoNameInputChange = evt => {
   const { value } = evt.target
   this.setState({...this.state, todoNameInput: value})
@@ -55,22 +59,18 @@ export default class App extends React.Component {
  componentDidMount() {
   this.fetchAllTodos()
  }
+
+
+
   render() {
     return (
       <div>
         <div id='error'>ERROR: {this.state.error}</div>
-        <div id='todos'>
-          <h2>Todos:</h2>
-          {
-            this.state.todos.reduce((acc, todo) => {
-              if(this.state.displayCompleted || !todo.completed) return acc.concat(
-                <div onClick={this.toggleCompleted(todo.id)} key={todo.id}>{todo.name}{todo.completed ? ' ✔️' : ''}</div>
-              )
-                return acc
-            }, [] )
-           //  return 
-          }
-        </div>
+          <TodoList 
+          todos={this.state.todos}
+          displayCompleted={this.state.displayCompleted}
+          toggleCompleted={this.toggleCompleted}
+          />
           <Form 
           onTodoFormSubmit={this.onTodoFormSubmit}
           onTodoNameInputChange={this.onTodoNameInputChange}
